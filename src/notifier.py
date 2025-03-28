@@ -10,7 +10,7 @@ from config import EMAIL_ID, EMAIL_PW
 def write_email(subject, body):
     message = MIMEText(body, 'plain', 'utf-8')
     message['From'] = EMAIL_ID
-    # message['To'] = "minu8165@gmail.com"              #To_email은 mailing_list를 보고 결정하기
+    #message['To'] = "minu8165@gmail.com"              #To_email은 mailing_list를 보고 결정하기
     message['Subject'] = subject+'에 관한 메일(Telegram_Alert_Service'
 
     return message
@@ -18,6 +18,8 @@ def write_email(subject, body):
 
 def send_email(subject, body):
     try:
+
+        to_email="minu8165@gmail.com"
         message = write_email(subject, body)
 
         mail_server = smtplib.SMTP("smtp.gmail.com", 587)

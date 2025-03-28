@@ -61,15 +61,15 @@ def print_channels():                           # 리스트에 있는 채널을 
     else:
         print("등록된 Channel이 없습니다.")
 
-
-def search_channels_by_keyword(bot: Bot, keyword: str):  #각 채널 내에서 키워드를 검색
-    match_messages = []
-
-    for channel_id in channels:
-        updates = bot.getUpdates()  #updates 모든 업데이트
-
-        for update in updates:
-            if update.message and keyword in update.message.text:
-                match_messages.append(update.message.text)
-
-    return match_messages
+#
+# def search_channels_by_keyword(bot: Bot, keyword: str):  #각 채널 내에서 키워드를 검색
+#     match_messages = []
+#
+#     for channel_id in channels:
+#         updates = bot.getUpdates()  #updates 모든 업데이트
+#
+#         for update in updates:
+#             if update.message and keyword in update.message.text:
+#                 match_messages.append(update.message.text)
+#
+#     return match_messages
