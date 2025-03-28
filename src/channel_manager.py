@@ -2,6 +2,7 @@
 
 import json
 from telegram import Bot
+from telegram.error import TelegramError
 
 channels = []  # 채널 목록을 저장하는 리스트 -> 추후 DB로 확장
 
@@ -73,3 +74,19 @@ def print_channels():                           # 리스트에 있는 채널을 
 #                 match_messages.append(update.message.text)
 #
 #     return match_messages
+
+async def check_bot_access(bot: Bot):
+    channels = load_channels()
+
+    if not channels:
+        print("등록된 채널이 없습니다.")
+        return
+
+    print("🔍 채널 접근 가능 여부 확인 중...\n")
+
+    for channel in channels:
+        try:
+            chat = await bot.get_chat(channel)  # 봇이 채널 정보 가져올 수 있는지 테스트
+            print(f"접근 가능: {channel} (title: {chat.title})")
+        except TelegramError as e:
+            print(f"접근 실패: {channel} | 이유: {e.message}")
