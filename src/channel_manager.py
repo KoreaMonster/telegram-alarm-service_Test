@@ -1,6 +1,7 @@
 # 텔레그램 채널을 검색하여 매일 자동으로 검색하거나, 사용자가 수동으로 채널을 추가할 수 있는 기능을 구현합니다.
 
 import json
+import asyncio
 from telegram import Bot
 from telegram.error import TelegramError
 
@@ -88,5 +89,27 @@ async def check_bot_access(bot: Bot):
         try:
             chat = await bot.get_chat(channel)  # 봇이 채널 정보 가져올 수 있는지 테스트
             print(f"접근 가능: {channel} (title: {chat.title})")
+
+            await asyncio.sleep(5)
+
+            members_count = await bot.get_chat_member_count(channel)
+            print(f"Total members: {members_count}")
+
+            await asyncio.sleep(5)
+
+            # admins = await bot.get_chat_administrators(channel)
+            # for admin in admins:
+            #     print(admin.user.username)
+            #
+            #     await asyncio.sleep(5)
+
+            # 채널에서 메시지를 하나 받아오는 테스트 추가
+            updates = await bot.get_updates(offset=None)
+            if updates:
+                print(f"✅ 새로운 메시지를 성공적으로 수신: {channel}")
+            else:
+                print(f"❌ 새로운 메시지를 받을 수 없습니다: {channel}")
+
         except TelegramError as e:
             print(f"접근 실패: {channel} | 이유: {e.message}")
+

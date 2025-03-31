@@ -4,12 +4,12 @@ import asyncio
 from telegram import Bot
 from channel_manager import check_bot_access
 from scheduler import schedule_keyword_search
-from src.channel_manager import add_channels
+from src.channel_manager import add_channels, remove_channel, print_channels
 from src.config import TELEGRAM_BOT_TOKEN
 
 bot = Bot(token = TELEGRAM_BOT_TOKEN)
 
-def main():
+async def main():
     print('=' * 50)
     print("🔔 Telegram Keyword Alert Service 시작")
 
@@ -37,17 +37,30 @@ def main():
     print(f"⏰ 실행 시간: 매일 {target_time_str}")
     print("=" * 50)
 
-    print(f"채널 등록하기")
     while True:
-        channel = input().strip()
-        if channel == "0":
-            break;
-        add_channels(channel)
+        print(f"Channel")
+        print(f"1.채널 추가하기\n2.채널 삭제하기\n3.채널목록 출력하기\n4.끝내기\n==============")
+        cha = input()
 
-    asyncio.run(check_bot_access(bot))
+        if cha == '1':
+            channel = input().strip()
+            add_channels(channel)
+        elif cha == '2':
+            channel = input().strip()
+            remove_channel(channel)
+        elif cha == '3':
+            print_channels()
+        else:
+            break
 
-    schedule_keyword_search(keyword, target_time_str)
+
+    # asyncio.run(check_bot_access(bot))
+    await check_bot_access(bot)
+    print(f"시작합니다...")
+    await schedule_keyword_search(keyword, target_time_str)
 
 
 if __name__ == "__main__":
-    main()
+    import asyncio
+    asyncio.run(main())
+    # main()
